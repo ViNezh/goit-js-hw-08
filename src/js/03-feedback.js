@@ -16,7 +16,8 @@ function onSubmitClick(event) {
   // Заборона дій за замовчуванням для браузера
   event.preventDefault();
   // Вивід в консоль відправлених даних форми
-  console.log(`Email: ${refs.email.value}, Message: ${refs.textArea.value}`);
+//   console.log(`Email: ${refs.email.value}, Message: ${refs.textArea.value}`);
+    console.log(savedData)
   // Очищення полів вводу та сховища
   event.currentTarget.reset();
   localStorage.removeItem('feedback-form-state');
