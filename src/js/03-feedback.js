@@ -6,8 +6,11 @@ const refs = {
   email: document.querySelector('.feedback-form input'),
   textArea: document.querySelector('.feedback-form textarea'),
 };
+
 // Створюємо об'єкт для збереження вмісту полів вводу
 const savedData = {};
+let restoredData={ };
+restoreData();
 // Встановлюємо прослуховування на події форми
 refs.form.addEventListener('submit', onSubmitClick);
 refs.form.addEventListener('input', throttle(dataInput, 500));
@@ -17,7 +20,7 @@ function onSubmitClick(event) {
   event.preventDefault();
   // Вивід в консоль відправлених даних форми
 //   console.log(`Email: ${refs.email.value}, Message: ${refs.textArea.value}`);
-    console.log(savedData)
+    console.log(restoredData)
   // Очищення полів вводу та сховища
   event.currentTarget.reset();
   localStorage.removeItem('feedback-form-state');
@@ -29,19 +32,19 @@ function dataInput(event) {
   localStorage.setItem('feedback-form-state', JSON.stringify(savedData));
 }
 // Функція відновлення введених даних
-restoreData();
+
 
 function restoreData() {
-    const restoreData = JSON.parse(localStorage.getItem('feedback-form-state'));
+   restoredData = JSON.parse(localStorage.getItem('feedback-form-state'));
     // Перевірка вмісту сховища, якщо дані існують, то переносимо їх у відповідні поля форми
-  if (restoreData) {
-    const keys = Object.keys(restoreData);
+  if (restoredData) {
+    const keys = Object.keys(restoredData);
     for (const key of keys) {
       if (key === refs.email.name) {
-        refs.email.value = restoreData[key];
+        refs.email.value = restoredData[key];
       }
       if (key === refs.textArea.name) {
-        refs.textArea.value = restoreData[key];
+        refs.textArea.value = restoredData[key];
       }
     }
   }
