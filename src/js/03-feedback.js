@@ -1,5 +1,6 @@
 // Завантажуємо бібліотеку lodash.throttle
 import throttle from 'lodash.throttle';
+
 // Створюємо об'єкт з посиланнями на елементи форми
 const refs = {
   form: document.querySelector('.feedback-form'),
@@ -9,18 +10,20 @@ const refs = {
 
 // Створюємо об'єкт для збереження вмісту полів вводу
 const savedData = {};
-let restoredData={ };
+
+// Функція повернення значень в поля вводу після перезавантаження сторінки
 restoreData();
+
 // Встановлюємо прослуховування на події форми
 refs.form.addEventListener('submit', onSubmitClick);
 refs.form.addEventListener('input', throttle(dataInput, 500));
+
 // Функція обробки події при відправці форми (SUBMIT)
 function onSubmitClick(event) {
   // Заборона дій за замовчуванням для браузера
   event.preventDefault();
   // Вивід в консоль відправлених даних форми
-//   console.log(`Email: ${refs.email.value}, Message: ${refs.textArea.value}`);
-    console.log(restoredData)
+     console.log(JSON.parse(localStorage.getItem('feedback-form-state')))
   // Очищення полів вводу та сховища
   event.currentTarget.reset();
   localStorage.removeItem('feedback-form-state');
@@ -31,11 +34,10 @@ function dataInput(event) {
   savedData[event.target.name] = event.target.value;
   localStorage.setItem('feedback-form-state', JSON.stringify(savedData));
 }
+
 // Функція відновлення введених даних
-
-
 function restoreData() {
-   restoredData = JSON.parse(localStorage.getItem('feedback-form-state'));
+   const restoredData = JSON.parse(localStorage.getItem('feedback-form-state'));
     // Перевірка вмісту сховища, якщо дані існують, то переносимо їх у відповідні поля форми
   if (restoredData) {
     const keys = Object.keys(restoredData);
