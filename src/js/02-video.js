@@ -8,21 +8,12 @@ const player = new Player(iframe);
 player.on('timeupdate',throttle(savedTime,1000) );
 // Функція збереження часу з плейера до сховища
 function savedTime (data) {
-    const keys = Object.keys(data);
-    for (const key of keys) {
-        if (key === 'seconds') {
-            console.log(data[key]);
-            const currentTime = data[key];
-            localStorage.setItem('videoplayer-current-time', JSON.stringify(currentTime));
+   localStorage.setItem('videoplayer-current-time', JSON.stringify(data.seconds));
         }
-    }
-}
-
 // Всстановлення часу початку відтворення відео в плейер
 player.setCurrentTime(JSON.parse(localStorage.getItem('videoplayer-current-time')) || 0.0)
     .then(function (seconds) {
-        seconds = JSON.parse(localStorage.getItem('videoplayer-current-time'));
-}).catch(function(error) {
+        }).catch(function(error) {
     switch (error.name) {
         case 'RangeError':
             // the time was less than 0 or greater than the video’s duration
